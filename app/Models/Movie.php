@@ -14,7 +14,13 @@ class Movie extends Model
         return $this->belongsToMany(Performer::class);
     }
 
-    public function userRatings() {
+    public function userRatings()
+    {
         return $this->hasMany(UserRating::class);
+    }
+
+    public function genres()
+    {
+        return $this->belongsToMany(Genre::class);
     }
 }
