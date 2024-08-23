@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Performer extends Model
 {
     use HasFactory;
+
+    public function movies()
+    {
+        return $this->belongsToMany(Movie::class);
+    }
 }
