@@ -6,6 +6,8 @@ use App\Models\Movie;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Resources\V1\MovieCollection;
+use App\Http\Resources\V1\MovieResource;
 
 class MovieController extends Controller
 {
@@ -14,7 +16,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::all();
+        return new MovieCollection(Movie::all());
     }
 
     /**
@@ -38,7 +40,7 @@ class MovieController extends Controller
      */
     public function show(Movie $movie)
     {
-        //
+        return new MovieResource($movie);
     }
 
     /**
