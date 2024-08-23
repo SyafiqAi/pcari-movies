@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Models\UserRating;
+use App\Models\Performer;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRatingRequest;
-use App\Http\Requests\UpdateUserRatingRequest;
+use App\Http\Requests\StorePerformerRequest;
+use App\Http\Requests\UpdatePerformerRequest;
 
-class UserRatingController extends Controller
+class PerformerController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +28,7 @@ class UserRatingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRatingRequest $request)
+    public function store(StorePerformerRequest $request)
     {
         //
     }
@@ -36,7 +36,7 @@ class UserRatingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(UserRating $userRating)
+    public function show(Performer $performer)
     {
         //
     }
@@ -44,7 +44,7 @@ class UserRatingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UserRating $userRating)
+    public function edit(Performer $performer)
     {
         //
     }
@@ -52,7 +52,7 @@ class UserRatingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRatingRequest $request, UserRating $userRating)
+    public function update(UpdatePerformerRequest $request, Performer $performer)
     {
         //
     }
@@ -60,7 +60,7 @@ class UserRatingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserRating $userRating)
+    public function destroy(Performer $performer)
     {
         //
     }
