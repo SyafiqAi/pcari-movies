@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Movie;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,10 @@ class UserRatingFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'movie_id' => Movie::factory(),
+            'username' => $this->faker->name(),
+            'rating' => $this->faker->numberBetween(1,10),
+            'r_description' => $this->faker->text()
         ];
     }
 }
