@@ -61,8 +61,9 @@ class MovieController extends Controller
 
         #region release date
         $release_date_query = $request->query('r_date');
-
-        $movies = $movies->whereDate('release', '<=', $release_date_query)->orderByDesc('release');
+        if (isset($release_date_query)) {
+            $movies = $movies->whereDate('release', '<=', $release_date_query)->orderByDesc('release');
+        }
         #endregion
         
         return new MovieCollection($movies->paginate());
