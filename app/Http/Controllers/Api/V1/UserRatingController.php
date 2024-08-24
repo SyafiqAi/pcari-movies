@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\UserRating;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRatingRequest;
-use App\Http\Requests\UpdateUserRatingRequest;
+use App\Http\Requests\V1\StoreUserRatingRequest;
+use App\Http\Requests\V1\UpdateUserRatingRequest;
+use App\Models\Movie;
 
 class UserRatingController extends Controller
 {
@@ -30,7 +31,26 @@ class UserRatingController extends Controller
      */
     public function store(StoreUserRatingRequest $request)
     {
-        //
+        $movie_title = $request->movie_title;
+
+        if (Movie::where('title', $movie_title)->exists()) {
+            $movie_id = Movie::query()
+                ->where('title', $movie_title)
+                ->pluck('id')
+                ->first();
+
+            UserRating::create([
+                'movie_id' => $movie_id,
+                'username' => $request->username,
+                'rating' => $request->rating,
+                'r_description' => $request->r_description,
+            ]);
+            return response()->json(['message' => 'Created new rating']);
+        } else {
+            return response()->json(['message' => 'Movie '. $movie_title .' not found']);
+        }
+
+        return $request;
     }
 
     /**
