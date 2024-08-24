@@ -95,7 +95,6 @@ class MovieController extends Controller
                 if (Genre::where('name', $genre)->exists()) {
                     $genre_id = Genre::query()
                         ->where('name', $genre)
-                        ->get()
                         ->pluck('id')
                         ->first();
                 } else {
@@ -115,7 +114,6 @@ class MovieController extends Controller
                 if (Performer::where('name', $performer)->exists()) {
                     $performer_id = Performer::query()
                         ->where('name', $performer)
-                        ->get()
                         ->pluck('id')
                         ->first();
                 } else {
@@ -127,7 +125,12 @@ class MovieController extends Controller
         }
         #endregion
 
-        return new MovieResource($movie);
+        return response()->json([
+            "message" => "Successfully added movie " . $request->title .  " with Movie_ID " . $movie->id,
+            "success" => true
+          
+        ]);
+        // return new MovieResource($movie);
     }
 
     /**

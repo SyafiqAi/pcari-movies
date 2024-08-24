@@ -45,9 +45,13 @@ class UserRatingController extends Controller
                 'rating' => $request->rating,
                 'r_description' => $request->r_description,
             ]);
-            return response()->json(['message' => 'Created new rating']);
+            return response()->json([
+                "message" => "Successfully added review for " . $request->movie_title . " by user: " . $request->username,
+                "success" => true
+
+            ]);
         } else {
-            return response()->json(['message' => 'Movie '. $movie_title .' not found']);
+            return response()->json(['message' => 'Movie ' . $movie_title . ' not found'], 409);
         }
 
         return $request;
