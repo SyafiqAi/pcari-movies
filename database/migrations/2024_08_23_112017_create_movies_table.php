@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('mpaa_rating');
             $table->string('director');
             $table->string('language');
-            $table->string('theater_name');
-            $table->integer('theater_room_no');
-            $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->string('theater_name')->nullable();
+            $table->integer('theater_room_no')->nullable();
+            $table->dateTime('start_time')->nullable();
+            $table->dateTime('end_time')->nullable();
             $table->timestamps();
         });
     }
