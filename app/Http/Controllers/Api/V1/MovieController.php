@@ -50,7 +50,7 @@ class MovieController extends Controller
         #endregion
 
         #region performer
-        $performer_query = $request->query('performer');
+        $performer_query = $request->query('performer_name');
         $performers = explode(',',  $performer_query);
 
         if (isset($performer_query)) {
