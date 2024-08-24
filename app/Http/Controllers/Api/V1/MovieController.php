@@ -8,6 +8,7 @@ use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\V1\MovieCollection;
 use App\Http\Resources\V1\MovieResource;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -22,21 +23,31 @@ class MovieController extends Controller
         $genre_query = $request->query('genre');
         $genres = explode(',',  $genre_query);
 
-        // dd($genres);
+        $movies = Movie::query();
 
         if (isset($genre_query)) {
-            $movies = Movie::has('genres');
+            $movies = Movie::query();
             foreach ($genres as $genre) {
                 $movies->whereHas('genres', function (Builder $query) use ($genre) {
                     $query->where('name', 'like', '%' . $genre . '%');
                 });
             }
-            $movies = $movies->get();
-
-            return new MovieCollection($movies);
         }
 
-        return new MovieCollection(Movie::paginate());
+
+        $theater_name_query = $request->query('theater_name');
+        if (isset($theater_name_query)) {
+            $movies = $movies->where('theater_name', $theater_name_query);
+        }
+
+        $desired_date_query = $request->query('d_date');
+        if (isset($desired_date_query)) {
+            $desired_date = Carbon::parse($desired_date_query);
+            $movies = $movies->whereDate('start_time', $desired_date);
+        }
+        
+
+        return new MovieCollection($movies->paginate());
     }
 
     /**
