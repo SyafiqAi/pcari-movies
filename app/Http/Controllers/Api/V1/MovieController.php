@@ -19,33 +19,45 @@ class MovieController extends Controller
      */
     public function index(Request $request)
     {
-
+        #region genre
         $genre_query = $request->query('genre');
         $genres = explode(',',  $genre_query);
 
         $movies = Movie::query();
 
         if (isset($genre_query)) {
-            $movies = Movie::query();
             foreach ($genres as $genre) {
                 $movies->whereHas('genres', function (Builder $query) use ($genre) {
                     $query->where('name', 'like', '%' . $genre . '%');
                 });
             }
         }
+        #endregion
 
-
+        #region theater desired date
         $theater_name_query = $request->query('theater_name');
         if (isset($theater_name_query)) {
             $movies = $movies->where('theater_name', $theater_name_query);
         }
-
         $desired_date_query = $request->query('d_date');
         if (isset($desired_date_query)) {
             $desired_date = Carbon::parse($desired_date_query);
             $movies = $movies->whereDate('start_time', $desired_date);
         }
-        
+        #endregion
+
+        #region performer
+        $performer_query = $request->query('performer');
+        $performers = explode(',',  $performer_query);
+
+        if (isset($performer_query)) {
+            foreach ($performers as $performer) {
+                $movies->whereHas('performers', function (Builder $query) use ($performer) {
+                    $query->where('name', 'like', '%' . $performer . '%');
+                });
+            }
+        }
+        #endregion
 
         return new MovieCollection($movies->paginate());
     }
