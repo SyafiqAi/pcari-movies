@@ -8,15 +8,35 @@ use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\V1\MovieCollection;
 use App\Http\Resources\V1\MovieResource;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new MovieCollection(Movie::all());
+
+        $genre_query = $request->query('genre');
+        $genres = explode(',',  $genre_query);
+
+        // dd($genres);
+
+        if (isset($genre_query)) {
+            $movies = Movie::has('genres');
+            foreach ($genres as $genre) {
+                $movies->whereHas('genres', function (Builder $query) use ($genre) {
+                    $query->where('name', 'like', '%' . $genre . '%');
+                });
+            }
+            $movies = $movies->get();
+
+            return new MovieCollection($movies);
+        }
+
+        return new MovieCollection(Movie::paginate());
     }
 
     /**
