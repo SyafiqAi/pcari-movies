@@ -11,6 +11,16 @@ class Movie extends Model
     
     protected $hidden = ['pivot'];
 
+    protected $fillable = [
+        'title',
+        'release',
+        'length',
+        'description',
+        'mpaa_rating',
+        'director',
+        'language',
+    ];
+    
     public function performers()
     {
         return $this->belongsToMany(Performer::class);

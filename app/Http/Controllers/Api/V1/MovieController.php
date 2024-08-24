@@ -4,11 +4,14 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Movie;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreMovieRequest;
-use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Requests\V1\StoreMovieRequest;
+use App\Http\Requests\V1\UpdateMovieRequest;
 use App\Http\Resources\V1\MovieCollection;
 use App\Http\Resources\V1\MovieResource;
+use App\Models\Genre;
+use App\Models\Performer;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 
@@ -65,7 +68,7 @@ class MovieController extends Controller
             $movies = $movies->whereDate('release', '<=', $release_date_query)->orderByDesc('release');
         }
         #endregion
-        
+
         return new MovieCollection($movies->paginate());
     }
 
@@ -82,7 +85,49 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request)
     {
-        //
+        $movie = Movie::create($request->all());
+
+        #region attaching genres
+        $genres = $request->genres;
+        if (isset($genres)) {
+            $genre_ids = [];
+            foreach ($genres as $genre) {
+                if (Genre::where('name', $genre)->exists()) {
+                    $genre_id = Genre::query()
+                        ->where('name', $genre)
+                        ->get()
+                        ->pluck('id')
+                        ->first();
+                } else {
+                    $genre_id = Genre::create(['name' => $genre])->id;
+                }
+                $genre_ids[] = $genre_id;
+            }
+            $movie->genres()->attach($genre_ids);
+        }
+        #endregion
+
+        #region attaching performers
+        $performers = $request->performers;
+        if (isset($performers)) {
+            $performer_ids = [];
+            foreach ($performers as $performer) {
+                if (Performer::where('name', $performer)->exists()) {
+                    $performer_id = Performer::query()
+                        ->where('name', $performer)
+                        ->get()
+                        ->pluck('id')
+                        ->first();
+                } else {
+                    $performer_id = Performer::create(['name' => $performer])->id;
+                }
+                $performer_ids[] = $performer_id;
+            }
+            $movie->performers()->attach($performer_ids);
+        }
+        #endregion
+
+        return new MovieResource($movie);
     }
 
     /**

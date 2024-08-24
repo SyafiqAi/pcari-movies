@@ -11,6 +11,8 @@ class Performer extends Model
     
     protected $hidden = ['pivot'];
 
+    protected $fillable = ['name'];
+    
     public function movies()
     {
         return $this->belongsToMany(Movie::class);
