@@ -23,7 +23,7 @@ class StoreMovieRequest extends FormRequest
     {
         return [
             'title' => ['required'],
-            'release' => ['required'],
+            'release' => ['required', 'date'],
             'length' => ['required'],
             'description' => ['required'],
             'mpaa_rating' => ['required'],
