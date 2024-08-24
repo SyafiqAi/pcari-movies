@@ -85,7 +85,10 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request)
     {
-        $movie = Movie::create($request->all());
+        $movie = Movie::create([
+            ...$request->all(),
+            'views' => 0,
+        ]);
 
         #region attaching genres
         $genres = $request->genres;
@@ -128,7 +131,7 @@ class MovieController extends Controller
         return response()->json([
             "message" => "Successfully added movie " . $request->title .  " with Movie_ID " . $movie->id,
             "success" => true
-          
+
         ]);
         // return new MovieResource($movie);
     }

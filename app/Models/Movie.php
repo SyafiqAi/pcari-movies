@@ -19,6 +19,7 @@ class Movie extends Model
         'mpaa_rating',
         'director',
         'language',
+        'views',
     ];
     
     public function performers()

@@ -28,6 +28,7 @@ class MovieFactory extends Factory
             'title' => $this->faker->city(),
             'release' => $this->faker->date(),
             'length' => $length,
+            'views' => $this->faker->numberBetween(1000,10000000),
             'description' => $this->faker->text(),
             'mpaa_rating' => $mpaa_rating,
             'director' => $this->faker->name(),

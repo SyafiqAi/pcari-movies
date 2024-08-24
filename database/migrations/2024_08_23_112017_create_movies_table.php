@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->date('release');
             $table->integer('length'); // length of the movie in minutes.
+            $table->integer('views');
             $table->string('description');
             $table->string('mpaa_rating');
             $table->string('director');
