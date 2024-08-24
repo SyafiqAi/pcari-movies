@@ -69,6 +69,23 @@ class MovieController extends Controller
         }
         #endregion
 
+        #region timeslot
+
+
+        if (
+            $request->query('time_start') !== null
+            && $request->query('time_end') !== null
+        ) {
+            $time_start_query = Carbon::parse($request->query('time_start'));
+            $time_end_query = Carbon::parse($request->query('time_end'));
+            $movies = $movies->where('start_time', '>=', $time_start_query)->where('end_time', '<=', $time_end_query);
+        }
+
+        // dd($time_start_query);
+
+
+        #endregion
+
         return new MovieCollection($movies->paginate());
     }
 
