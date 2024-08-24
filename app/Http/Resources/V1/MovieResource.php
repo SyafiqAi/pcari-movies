@@ -31,7 +31,8 @@ class MovieResource extends JsonResource
             'Performers' => $this->performers()
             // ->select('name', 'performer_id')
             ->get()
-            ->pluck('name')
+            ->pluck('name'),
+            'Release_date' => $this->release,
         ];
     }
 }
