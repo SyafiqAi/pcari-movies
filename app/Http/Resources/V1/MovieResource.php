@@ -28,6 +28,10 @@ class MovieResource extends JsonResource
             'End_time' => $this->end_time,
             'Theater_name' => $this->theater_name,
             'Theater_room_no' => $this->theater_room_no,
+            'Performers' => $this->performers()
+            // ->select('name', 'performer_id')
+            ->get()
+            ->pluck('name')
         ];
     }
 }

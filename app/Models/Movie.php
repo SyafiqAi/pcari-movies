@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Movie extends Model
 {
     use HasFactory;
+    
+    protected $hidden = ['pivot'];
 
     public function performers()
     {

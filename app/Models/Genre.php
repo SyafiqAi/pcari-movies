@@ -9,6 +9,8 @@ class Genre extends Model
 {
     use HasFactory;
 
+    protected $hidden = ['pivot'];
+
     public function movies() {
         return $this->belongsToMany(Genre::class);
     }
