@@ -26,6 +26,7 @@ class UserRatingController extends Controller
         //
     }
 
+    #region store
     /**
      * Store a newly created resource in storage.
      */
@@ -34,17 +35,16 @@ class UserRatingController extends Controller
         $movie_title = $request->movie_title;
 
         if (Movie::where('title', $movie_title)->exists()) {
-            $movie_id = Movie::query()
+            Movie::query()
                 ->where('title', $movie_title)
-                ->pluck('id')
-                ->first();
+                ->first()
+                ->userRatings()
+                ->create([
+                    'username' => $request->username,
+                    'rating' => $request->rating,
+                    'r_description' => $request->r_description,
+                ]);
 
-            UserRating::create([
-                'movie_id' => $movie_id,
-                'username' => $request->username,
-                'rating' => $request->rating,
-                'r_description' => $request->r_description,
-            ]);
             return response()->json([
                 "message" => "Successfully added review for " . $request->movie_title . " by user: " . $request->username,
                 "success" => true
