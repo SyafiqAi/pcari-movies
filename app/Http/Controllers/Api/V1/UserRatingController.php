@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\StoreUserRatingRequest;
 use App\Http\Requests\V1\UpdateUserRatingRequest;
 use App\Models\Movie;
+use Throwable;
 
 class UserRatingController extends Controller
 {
@@ -34,7 +35,7 @@ class UserRatingController extends Controller
     {
         $movie_title = $request->movie_title;
 
-        if (Movie::where('title', $movie_title)->exists()) {
+        try {
             Movie::query()
                 ->where('title', $movie_title)
                 ->first()
@@ -44,17 +45,15 @@ class UserRatingController extends Controller
                     'rating' => $request->rating,
                     'r_description' => $request->r_description,
                 ]);
-
-            return response()->json([
-                "message" => "Successfully added review for " . $request->movie_title . " by user: " . $request->username,
-                "success" => true
-
-            ]);
-        } else {
+        } catch (Throwable $e) {
             return response()->json(['message' => 'Movie ' . $movie_title . ' not found'], 409);
         }
 
-        return $request;
+
+        return response()->json([
+            "message" => "Successfully added review for " . $request->movie_title . " by user: " . $request->username,
+            "success" => true
+        ]);
     }
 
     /**
