@@ -112,14 +112,7 @@ class MovieController extends Controller
         if (isset($genres)) {
             $genre_ids = [];
             foreach ($genres as $genre) {
-                if (Genre::where('name', $genre)->exists()) {
-                    $genre_id = Genre::query()
-                        ->where('name', $genre)
-                        ->pluck('id')
-                        ->first();
-                } else {
-                    $genre_id = Genre::create(['name' => $genre])->id;
-                }
+                $genre_id = Genre::firstOrCreate(['name' => $genre]) -> id;
                 $genre_ids[] = $genre_id;
             }
             $movie->genres()->attach($genre_ids);
@@ -131,14 +124,7 @@ class MovieController extends Controller
         if (isset($performers)) {
             $performer_ids = [];
             foreach ($performers as $performer) {
-                if (Performer::where('name', $performer)->exists()) {
-                    $performer_id = Performer::query()
-                        ->where('name', $performer)
-                        ->pluck('id')
-                        ->first();
-                } else {
-                    $performer_id = Performer::create(['name' => $performer])->id;
-                }
+                $performer_id = Performer::firstOrCreate(['name' => $performer]) -> id;
                 $performer_ids[] = $performer_id;
             }
             $movie->performers()->attach($performer_ids);
