@@ -110,24 +110,20 @@ class MovieController extends Controller
         #region attaching genres
         $genres = $request->genres;
         if (isset($genres)) {
-            $genre_ids = [];
             foreach ($genres as $genre) {
-                $genre_id = Genre::firstOrCreate(['name' => $genre]) -> id;
-                $genre_ids[] = $genre_id;
+                $genre_id = Genre::firstOrCreate(['name' => $genre])->id;
+                $movie->genres()->attach($genre_id);
             }
-            $movie->genres()->attach($genre_ids);
         }
         #endregion
 
         #region attaching performers
         $performers = $request->performers;
         if (isset($performers)) {
-            $performer_ids = [];
             foreach ($performers as $performer) {
-                $performer_id = Performer::firstOrCreate(['name' => $performer]) -> id;
-                $performer_ids[] = $performer_id;
+                $performer_id = Performer::firstOrCreate(['name' => $performer])->id;
+                $movie->performers()->attach($performer_id);
             }
-            $movie->performers()->attach($performer_ids);
         }
         #endregion
 
